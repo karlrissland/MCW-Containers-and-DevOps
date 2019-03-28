@@ -1,0 +1,88 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vNetName": {
+      "type": "string",
+      "defaultValue":  "workshopVnet"
+    },
+    "AdminUserName": {
+      "type": "string",
+      "defaultValue":  "sysadmin"
+    },
+    "AdminUserPassword": {
+      "type": "securestring",
+      "defaultValue":  "Password$123"
+    },
+    "DevWorkstationOSVersion": {
+      "type": "string",
+      "defaultValue": "VS-2017-Comm-Latest-WS2016",
+      "allowedValues": [
+        "VS-2017-Comm-Latest-WS2016",
+        "VS-2017-Ent-Latest-WS2016"
+      ]
+    },
+    "DevWorkstationName": {
+      "type": "string",
+      "defaultValue":  "vmdev01"
+    },
+    "repoUri": {
+      "type": "string",
+      "defaultValue": "https://github.com/danielshue/containersworkshop.git"
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "defaultValue": "[uri(deployment().properties.templateLink.uri, '.')]"
+    }
+  },
+  "variables": {
+    "srvStorageType": "Standard_LRS",
+    "TemplateFolder": "nestedtemplates",
+    "vNetTemplateFileName": "vNet.json",
+    "DevWorkstationTemplateFileName": "VsDevWorkstation.json"
+  },
+  "resources": [
+    {
+      "name": "vNetDeploy",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('TemplateFolder'), '/', variables('vNetTemplateFileName'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vNetName": { "value": "[parameters('vNetName')]" }
+        }
+      }
+    },
+    {
+      "name": "DevWorkstation",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [ "vNetDeploy"],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('TemplateFolder'), '/', variables('DevWorkstationTemplateFileName'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "VsDevWorkstationStorageType": { "value": "[variables('srvStorageType')]" },
+          "VsDevWorkstationName": { "value": "[parameters('DevWorkstationName')]" },
+          "AdminUserName": { "value": "[parameters('AdminUserName')]" },
+          "AdminUserPassword": { "value": "[parameters('AdminUserPassword')]" },
+          "VsDevWorkstationWindowsOSVersion": { "value": "[parameters('DevWorkstationOSVersion')]" },
+          "virtualNetworkName": { "value": "[parameters('vNetName')]" },
+          "virtualNetworkResourceGroup": { "value": "[resourceGroup().name]" },
+          "repoUri": { "value": "[parameters('repoUri')]" },
+          "_artifactsLocation": { "value": "[parameters('_artifactsLocation')]" }
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
