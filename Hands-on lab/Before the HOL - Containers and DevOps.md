@@ -9,7 +9,7 @@ Before the hands-on lab setup guide
 </div>
 
 <div class="MCWHeader3">
-November 2018
+March 2019
 </div>
 
 
@@ -25,21 +25,16 @@ The names of manufacturers, products, or URLs are provided for informational pur
 <!-- TOC -->
 
 - [Containers and DevOps before the hands-on lab setup guide](#containers-and-devops-before-the-hands-on-lab-setup-guide)
-    - [Requirements](#requirements)
-    - [Before the hands-on lab](#before-the-hands-on-lab)
-        - [Task 1: Resource Group](#task-1-resource-group)
-        - [Task 2: Create a Windows 10 Development VM](#task-2-create-a-windows-10-development-vm)
-        - [Task 3: Install WSL (Bash on Ubuntu on Windows)](#task-3-install-wsl-bash-on-ubuntu-on-windows)
-        - [Task 4: Create an SSH key](#task-4-create-an-ssh-key)
-        - [Task 5: Create a build agent VM](#task-5-create-a-build-agent-vm)
-        - [Task 6: Connect securely to the build agent](#task-6-connect-securely-to-the-build-agent)
-        - [Task 7: Complete the build agent setup](#task-7-complete-the-build-agent-setup)
-        - [Task 8: Create an Azure Container Registry](#task-8-create-an-azure-container-registry)
-        - [Task 9: Create a Service Principal](#task-9-create-a-service-principal)
-        - [Task 10: Create an Azure Kubernetes Service cluster](#task-10-create-an-azure-kubernetes-service-cluster)
-        - [Task 11: Install Azure CLI](#task-11-install-azure-cli)
-        - [Task 12: Install Kubernetes CLI](#task-12-install-kubernetes-cli)
-        - [Task 13: Download the FabMedical starter files](#task-13-download-the-fabmedical-starter-files)
+  - [Requirements](#requirements)
+  - [Before the hands-on lab](#before-the-hands-on-lab)
+    - [Task 1: Prepare your development environment](#task-1-prepare-your-development-environment)
+    - [Task 2: Configur your dev environment](#task-2-configur-your-dev-environment)
+    - [Task 3: Validate your environment](#task-3-validate-your-environment)
+    - [Task 4: Setup your Azure DevOps Account](#task-4-setup-your-azure-devops-account)
+    - [Task 5: Create Azure Resources needed for the lab](#task-5-create-azure-resources-needed-for-the-lab)
+    - [Task 9: Create a Service Principal](#task-9-create-a-service-principal)
+    - [Task 10: Create an Azure Kubernetes Service cluster](#task-10-create-an-azure-kubernetes-service-cluster)
+    - [Task 13: Download the FabMedical starter files](#task-13-download-the-fabmedical-starter-files)
 
 <!-- /TOC -->
 
@@ -63,7 +58,7 @@ The names of manufacturers, products, or URLs are provided for informational pur
 
     - Command prompt.
 
-         i.  On Windows, you will be using Bash on Ubuntu on Windows, hereon referred to as WSL.
+         i.  On Windows, you will be using PowerShell.
 
          ii. On Mac, all instructions should be executed using bash in Terminal.
 
@@ -71,407 +66,133 @@ The names of manufacturers, products, or URLs are provided for informational pur
 
 ## Before the hands-on lab
 
-**Duration**: 1 hour
+**Duration**: 30min
 
 You should follow all of the steps provided in this section *before* taking part in the hands-on lab ahead of time as some of these steps take time.
 
-### Task 1: Resource Group
+### Task 1: Prepare your development environment
 
-You will create an Azure Resource Group to hold most of the resources that you create in this hands-on lab. This approach will make it easier to clean up later. You will be instructed to create new resources in this Resource Group during the remaining exercises.
+You will deploy the development workstation to your azure subscription.  This will create the resource group you will use throughout this lab as well as your development VM.  The ARM template performs the following;
+- Creates a virtual network
+- Creates a virtual machine
+- Installs Hyper-V on the VM
+- Installs Docker-Desktop on the VM
 
-1.  In your browser, navigate to the **Azure Portal** (<https://portal.azure.com>).
+> **Note: Setting up the development machine is optional.  You can isntall the development tools onto your local Windows, MacOSX, or Linux development workstation.**
 
-2.  Select **+ Create a resource** in the navigation bar at the left.
+1.  Click the "deploy to Azure" Button.  This will take you to the Azure Portal, log you in, and show you the custom template deployment screen prompting you for deployment parameters.
 
-    ![This is a screenshot of the + Create a resource link in the navigation bar.](media/b4-image4.png)
+2.  For the **Resource Group**, select to Create New and enter something like "fabmedical-SUFFIX".
 
-3.  In the Search the Marketplace search box, type \"Resource group\" and press Enter.
+    ![This is a screenshot of the deploy to azure screen showing how to create a new resource group.](media/na.png)
 
-    ![Resource Group is typed in the Marketplace search box.](media/b4-image5.png)
+3.  Enter the **Admin User Name** and **Admin User Password** or accept the user "sysadmin" and the default password "Password$123".
 
-4.  Select **Resource group** on the Everything blade and select **Create**.
+    ![Shows where to add user name and password.](media/na.png)
 
-    ![This is a screenshot of Resource group on the Everything blade.](media/b4-image6.png)
+4.  Check the **I agree to the terms and conditions stated above** checkbox and then click the **Purchase** button.  Deploying the VM should take about 15 minutes.  This is a good time to start reviewing the Hands-on lab step by step documentation.
 
-5.  On the new Resource group blade, set the following:
-
-    a.  **Resource group name:** Enter something like "fabmedical-SUFFIX", as shown in the following screenshot.
-
-    b.  **Subscription:** Select the subscription you will use for all the steps during the lab.
-
-    c.  **Resource group location:** Choose a region where all Azure Container Registry SKUs are available, which is currently East US, West Central US, or West Europe, and remember this for future steps so that the resources you create in Azure are all kept within the same region.
-
-    ![In the Resource group blade, the value for the Resource group name box is fabmedical-sol, and the value of the Resource group location box is East US.](media/b4-image7.png)
-
-    d.  Select **Create**.
-
-6.  When this completes, your Resource Group will be listed in the Azure Portal.
-
-    ![In this screenshot of the Azure Portal, the fabmedical-sol Resource group is listed.](media/b4-image8.png)
-
-### Task 2: Create a Windows 10 Development VM
-
-You will follow these steps to create a development VM (machine) for the following reasons:
-
--   If your operating system is earlier than Windows 10 Anniversary Update, you will need it to work with WSL as instructed in the lab.
-
--   If you are not sure if you set up WSL correctly, given there are a few ways to do this, it may be easier to create the development machine for a predictable experience.
-
-> **Note: Setting up the development machine is optional for Mac OS since you will use Terminal for commands. Setting up the development machine is also optional if you are certain you have a working installation of WSL on your current Windows 10 VM.**
-
-In this section, you will create a Windows 10 VM to act as your development machine. You will install the required components to complete the lab using this machine. You will use this machine instead of your local machine to carry out the instructions during the lab.
-
-1.  From the Azure Portal, select **+ Create a resource**, type "**Windows 10**" in the Search the marketplace text box and press **Enter**.
-
-    ![This is a screenshot of the search results for Windows 10. A red arrow points at the fourth result: Windows 10 Pro N, Version 1709.](media/b4-image9.png)
-
-2.  Select **Windows 10 Pro N, Version 1709** and select **Create**.
-
-3.  On the Basics blade of the Virtual Machine setup, set the following:
-
-    -   **Subscription**: Choose the same subscription you are using for all your work.
-
-    -   **Resource group**: Choose Use existing and select the resource group you created previously.
-
-    -   **Name**: Provide a unique name, such as "fabmedicald-SUFFIX" as shown in the following screenshot.
-
-    -   **Region**: Choose the same region that you did before.
-
-    -   **Image**: Leave as default "Windows 10 Pro N, Version 1709".
-
-    -   **Size**: Leave as default "Standard DS2_V2".
-
-    -   **User name**: Provide a user name, such as "adminfabmedical".
-
-    -   **Password**: Provide a password, such as "Password\$123".
-
-    -   **Confirm password**: Confirm the previously entered password.
-
-    -   Select **Next-Disks** to move to the next step.
-
-    ![In the Basics blade, the values listed above appear in the corresponding boxes. The suffix after the fabmedicald- value is obscured in the Name box and the Resource group box, as is the value for the Subscription box.](media/vm-basic-create-screen.png)
-
-4.  From the Disks screen, choose OS disk type "Standard SSD" and select  **Next : Networking**.
-
-    ![This is a screenshot of the vm disks screen to choose the OS disk type.](media/vm-basic-create-disks-screen.png)
-
-5.  From the Networking screen, leave everything as except the following:
-    -   **Public inbound ports**: Select Allow selected ports.
-    -   **Select inbound ports**: Select RDP.
-    -   Select **Review + create**.
-
-    ![This is a screenshot of the network settings for the vm to configure the ports to be allowed in.](media/vm-basic-create-network-screen.png)
+    ![Shows the ckeckbox and purchase button](media/na.png)
 
 
-6.  From the Create screen, you should see that validation passed and select **Create**.
+### Task 2: Configur your dev environment
 
-    ![This is a screenshot of the Create blade indicating that validation passed. Offer details are also visible.](media/vm-basic-create-review-screen.png)
+Your development VM is almost ready.  Once you login for the first time, a script will run that will complete the process.  The script will configure the following;
+- Install Goggle Chrome
+- Install Postman
+- Install Azure CLI
+- Install Kubernetes CLI
+- Install Helm CLI
+- Install Visual Studio Code and add several extensions
+- Kick off Docker-Desktop
+The script should take about 5 minutes to complete.
+> **Note: If you are using your local maching as your development workstation, you can find instructions and scripts here<document link>**
 
-7.  The VM will begin deployment to your Azure subscription.
+
+1.  From the Azure Portal, select the resource group you created when you deployed the template in Task 1.
+
+    ![image](media/ns.png)
+
+2.  Select the VM.
+   
+    ![image](media/ns.png)
+
+3.  Click connect, download the RDP file, and open the RDP file.
+    
+    ![image](media/ns.png)
+
+4.  Enter the user name and password you used when you deployed the template.
+
+    ![image](media/ns.png)
+
+5.  Once you login, a script will kick off which will install additional tools.
+
+    ![image](media/ns.png)
+
+
+6.  When the script is finished, it will launch Docker-Desktop and copy a script to your desktop.  The script on your desktop can be used if you need to reinstall some of the tools.
+
+    ![image](media/ns.png)
+
+7.  Click OK for Docker-Desktop.  This will start docker on the development machine.  This will take about 5 minutes.
 
     ![The Deploying Windows 10 Pro N, Version 1709 icon indicates that deployment has begun to your Azure subscription.](media/b4-image13.png)
 
-8.  Once provisioned, you will see the VM in your list of resources belonging to the resource group you created previously and select the new VM.
+### Task 3: Validate your environment
 
-    ![This screenshot of your resource list has the following columns: Name, Type, and Location. The first row is highlighted with the following values: fabmedicald-(suffix obscured), Virtual machine, and West Europe.](media/b4-image14.png)
+We are going to run a couple of tests to make sure your environment is setup correctly.  We are going to;
+- Open Visual Studio Code
+- Open a PowerShell Terminal Window
+- Verify we can run a docker container
+- Verify we have various command line tools installed and running
 
-9.  In the Overview area for the VM, select Connect to establish a Remote Desktop Connection (RDP) for the VM.
+1. Open Visual Studio Code and verify extensions are installed
+2. Open a terminal window and configure PowerShell as your default terminal
+3. Test docker by entering 'docker run hello-world' in the terminal window
+4. Enter 'az' in the terminal window to verify the azure command line tool
+5. Enter 'kubectl' in the terminal window to verify the kubernetes command line tool
+6. Enter 'helm' in the terminal window to verify the helm command line tool
 
-    ![In this screenshot of the Overview area for the VM, a red arrow points at the Connect icon.](media/b4-image15.png)
+### Task 4: Setup your Azure DevOps Account
+This task will walk you through creating a new Azure DevOps tennant and creating a project for the lab.
 
-10. Complete the steps to establish the RDP session and ensure that you are connected to the new VM.
+**NOTE: if you already have and use an Azure DevOps tennant, you can skip to step 4d and use it as long as you have the ability to create new projects and build/release pipelines.**
 
-### Task 3: Install WSL (Bash on Ubuntu on Windows)
+1. go to visualstudio.com
+2. login 
+3. create new organization
+4. create new project
+5. upload project files into your repo
 
->**Note: If you are using a Windows 10 development machine, follow these steps. For Mac OS you can ignore this step since you will be using Terminal for all commands.**
+### Task 5: Create Azure Resources needed for the lab
 
-You will need WSL to complete various steps. A complete list of instructions for supported Windows 10 versions is available on this page:
+The lab uses several Azure services.  In this task we will use the Azure CLI to deploy the services into the resource group you created in step 1.  We will create the following in your Azure subscription;
+- Azure Service Principle
+- Azure Container Registry
+- Azure Kubernetes Cluster
+- Azure CosmosDB
 
-<https://docs.microsoft.com/en-us/windows/wsl/install-win10>
+1. Open Visual Studio Code and Open a PowerShell terminal window
+2. Create an Azure Service Principle
+   1.  show account
+   2.  list account
+   3.  get subscription
+   4.  create service principal
+3. Create an Azure Container Registry by executing the following command in the terminal window
+   '''az acr create --resource-group <resourceGroupName> --name <containerRegistryName> --sku basic
 
-### Task 4: Create an SSH key
+4. Create an Azure Kubernetes Cluster by executing the following command in the terminal window
+    '''az aks create --name <clusterName> --resource-group <resourceGroupName> --service-pricncipal <servicePrincipalName>
 
-In this section, you will create an SSH key to securely access the VMs you create during the upcoming exercises.
+5. Create an Azure CosmosDB instance by executing the following command in the terminal window
 
-1.  Open a WSL command window.
 
-    ![This is an icon for Bash on Ubuntu on Windows (Desktop app).](media/b4-image16.png)
 
-    or
 
-    ![This is an icon for Ubuntu (Trusted Microsoft Store app).](media/b4-image17.png)
 
-2.  From the command line, enter the following command to ensure that a directory for the SSH keys is created. You can ignore any errors you see in the output.
 
-``` bash
-    mkdir .ssh
-```
 
-3.  From the command line, enter the following command to generate an SSH key pair. You can replace "admin" with your preferred name or handle.
 
-``` bash
-   ssh-keygen -t RSA -b 2048 -C admin@fabmedical
-```
-
-4.  You will be asked to save the generated key to a file. Enter \".ssh/fabmedical\" for the name.
-
-5.  Enter a passphrase when prompted, and **don't forget it**!
-
-6.  Because you entered ".ssh/fabmedical", the file will be generated in the ".ssh" folder in your user folder, where WSL opens by default.
-
-7.  Keep this WSL window open and remain in the default directory, you will use it in later tasks.
-
-    ![In this screenshot of the WSL window, ssh-keygen -t RSA -b 2048 -C admin\@fabmedical has been typed and run at the command prompt. Information about the generated key appears in the window. At this time, we are unable to capture all of the information in the window. Future versions of this course should address this.](media/b4-image18.png)
-
-### Task 5: Create a build agent VM
-
-In this section, you will create a Linux VM to act as your build agent. You will install Docker to this VM once it is set up, and you will use this VM during the lab to develop and deploy.
-
->**Note: You can set up your local machine with Docker however the setup varies for different versions of Windows. For this lab, the build agent approach simply allows for predictable setup.**
-
-1. From the Azure Portal, select **+ Create a resource**, type "**Ubuntu**" in the Search the marketplace text box and press **Enter**.
-
-    ![This screenshot of the marketplace search results for Ubuntu has the following columns: Name, Publisher, and Category. A red arrow points at the first search result, which has the following values: Ubuntu Server 16.04 LTS, Canonical, and Virtual Machines.](media/b4-image19.png)
-
-2. Select **Ubuntu Server 16.04 LTS** and select **Create**.
-
-3. On the Basics blade of the Virtual Machine setup, set the following:
-   
-    -   **Subscription**: Choose the same subscription you are using for all your work.
-
-    -   **Resource group**: Choose Use existing and select the resource group you created previously.
-
-    -   **Name**: Provide a unique name, such as "fabmedical-SUFFIX" as shown in the following screenshot.
-
-    -   **Region**: Choose the same region that you did before.
-
-    -   **Image**: Leave as "Ubuntu Server 16.04 LTS".
-
-    -   **Size**: Leave as "Standard D2s v3".
-
-    -   **User name**: Provide a user name, such as "adminfabmedical".
-
-    -   **Authentication** **type**: Leave as SSH public key.
-
-    -   **SSH public key**: From your local machine, copy the public key portion of the SSH key pair you created previously, to the clipboard.
-
-        -  From WSL, verify you are in your user directory shown as "**\~"**. This command will take you there:
-
-            ``` bash
-            cd ~
-            ```
-
-        - Type the following command at the prompt to display the public key that you generated:
-
-            ``` bash
-            cat .ssh/fabmedical.pub
-            ```
-
-            ![In this screenshot of the WSL window, cat .ssh/fabmedical.pub has been typed and run at the command prompt, which displays the public key that you generated.](media/b4-image20.png)
-
-        - Copy the entire contents of the file to the clipboard.
-
-            ``` bash
-            cat .ssh/fabmedical.pub | clip.exe
-            ```
-
-        - Paste this value in the SSH public key textbox of the blade.
-
-    -   **Login with Azure Active Directory**: Leave disabled.
-
-    -   Select **Next : Disks** to move to the next step.
-
-    ![In the Basics blade, the values listed above appear in the corresponding boxes. The public key that you copied is pasted in the SSH public key box.](media/vm-basic-ubuntu-create-screen.png)
-
-4. From the Disk screen select Standard SSD and then **Next : Networking**.
-
-    !["From the list select Standard SSD for the OS disk type.](media/vm-basic-create-disks-ubuntu-screen.png)
-
-5. From the Networking screen, accept the default values for most settings and select "SSH (22)" as a public inbound port, then select **Review + create**.
-
-    ![This is the screenshot of the Networking screen with SSH selected as a public inbound port.](media/vm-basic-create-network-ubuntu-screen.png)
-
-6. From the Create blade, you should see that validation passed and select **Create**.
-
-    ![This is a screenshot of the Create blade indicating that validation passed. Offer details are also visible.](media/vm-basic-create-review-ubuntu-screen.png)
-
-7. The VM will begin deployment to your Azure subscription.
-
-    ![The Deploying Ubuntu Server 16.04 LTS icon indicates that deployment has begun to your Azure subscription.](media/b4-image24.png)
-
-8. Once provisioned, you will see the VM in your list of resources belonging to the resource group you created previously.
-
-    ![This screenshot of your resource list has the following columns: Name, Type, and Location. The third row is highlighted with the following values: fabmedical-(suffix obscured), Virtual machine, and East US.](media/b4-image25.png)
-
-### Task 6: Connect securely to the build agent
-
-In this section, you will validate that you can connect to the new build agent VM.
-
-1.  From the Azure portal, navigate to the Resource Group you created previously and select the new VM, fabmedical-SUFFIX.
-
-2.  In the Overview area for the VM, take note of the public IP address for the VM.
-
-    ![In this screenshot of the Overview area for the VM, Public IP address 52.174.141.11 is highlighted.](media/b4-image26.png)
-
-3.  From your local machine, return to your open WSL window and make sure you are in your user directory **\~** where the key pair was previously created. This command will take you there:
-
-    ``` bash
-    cd ~
-    ```
-
-4.  Connect to the new VM you created by typing the following command:
-
-    ``` bash
-     ssh -i [PRIVATEKEYNAME] [BUILDAGENTUSERNAME]@[BUILDAGENTIP]
-    ```
-
-    Replace the bracketed values in the command as follows:
-
-    -   [PRIVATEKEYNAME]: Use the private key name ".ssh/fabmedical," created above.
-
-    -   [BUILDAGENTUSERNAME]: Use the username for the VM, such as adminfabmedical.
-
-    -   [BUILDAGENTIP]: The IP address for the build agent VM, retrieved from the VM Overview blade in the Azure Portal.
-
-    ``` bash
-    ssh -i .ssh/fabmedical adminfabmedical@52.174.141.11
-    ```
-
-5.  When asked to confirm if you want to connect, as the authenticity of the connection cannot be validated, type "yes".
-
-6.  When asked for the passphrase for the private key you created previously, enter this value.
-
-7.  You will connect to the VM with a command prompt such as the following. Keep this command prompt open for the next step:
-
-    adminfabmedical\@fabmedical-SUFFIX:~$
-
-    ![In this screenshot of a Command Prompt window, ssh -i .ssh/fabmedical adminfabmedical\@52.174.141.11 has been typed and run at the command prompt. The information detailed above appears in the window. At this time, we are unable to capture all of the information in the window. Future versions of this course should address this.](media/b4-image27.png)
-
->**Note: If you have issues connecting, you may have pasted the SSH public key incorrectly. Unfortunately, if this is the case, you will have to recreate the VM and try again.**
-
-### Task 7: Complete the build agent setup
-
-In this task, you will update the packages and install Docker engine.
-
-1. Go to the WSL window that has the SSH connection open to the build agent VM.
-
-2. Update the Ubuntu packages and install curl and support for repositories over HTTPS in a single step by typing the following in a single line command. When asked if you would like to proceed, respond by typing "y" and pressing enter.
-
-    ``` bash
-    sudo apt-get update && sudo apt install apt-transport-https ca-certificates curl software-properties-common
-    ```
-
-3. Add Docker's official GPG key by typing the following in a single line command:
-
-    ``` bash
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    ```
-4. Add Docker's stable repository to Ubuntu packages list by typing the following in a single line command:
-
-    ``` bash
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    ```
-5. Add NodeJs PPA to use NodeJS LTS release and Update the Ubuntu packages and install Docker engine, node.js and the node package manager in a single step by typing the following in a single line command. When asked if you would like to proceed, respond by typing "y" and pressing enter.
-
-    ``` bash
-    sudo apt-get install curl python-software-properties
-    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-    sudo apt-get update && sudo apt install docker-ce nodejs mongodb-clients
-    ```
-6. Now, upgrade the Ubuntu packages to the latest version by typing the following in a single line command. When asked if you would like to proceed, respond by typing "y" and pressing enter.
-
-    ``` bash
-    sudo apt-get upgrade
-    ```
-
-7. Install `docker-compose`
-
-    ```bash
-    sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
-    ```
-
-8. When the command has completed, check the Docker version installed by executing this command. The output may look something like that shown in the following screen shot. Note that the server version is not shown yet, because you didn't run the command with elevated privileges (to be addressed shortly).
-
-    ``` bash
-    docker version
-    ```
-
-    ![In this screenshot of a Command Prompt window, docker version has been typed and run at the command prompt. Docker version information appears in the window.](media/b4-image28.png)
-
-9. You may check the versions of node.js and npm as well, just for information purposes, using these commands:
-
-    ``` bash
-    nodejs --version
-
-    npm -version
-    ```
-
-10. Install `bower`
-
-    ```bash
-    sudo npm install -g bower
-    sudo ln -s /usr/bin/nodejs /usr/bin/node
-    ```
-
-11. Add your user to the Docker group so that you do not have to elevate privileges with sudo for every command. You can ignore any errors you see in the output.
-    ``` bash
-    sudo usermod -aG docker $USER
-    ```
-
-    ![In this screenshot of a Command Prompt window, sudo usermod -aG docker \$USER has been typed and run at the command prompt. Errors appear in the window.](media/b4-image29.png)
-
-12. In order for the user permission changes to take effect, exit the SSH session by typing 'exit', then press \<Enter\>. Repeat the commands in Task 6: Connect securely to the build agent from step 4 to establish the SSH session again.
-
-13. Run the Docker version command again, and note the output now shows the server version as well.
-
-    ![In this screenshot of a Command Prompt window, docker version has been typed and run at the command prompt. Docker version information appears in the window, in addition to server version information.](media/b4-image30.png)
-
-14. Run a few Docker commands:
-
-    -   One to see if there are any containers presently running.
-    ``` bash
-    docker container ls
-    ```
-
-    -   One to see if any containers exist whether running or not.
-    ``` bash
-    docker container ls -a
-    ```
-
-15. In both cases, you will have an empty list but no errors running the command. Your build agent is ready with Docker engine running properly.
-
-    ![In this screenshot of a Command Prompt window, docker container ls has been typed and run at the command prompt, as has the docker container ls -a command.](media/b4-image31.png)
-
-### Task 8: Create an Azure Container Registry
-
-You deploy Docker images from a registry. To complete the hands-on lab, you will need access to a registry that is accessible to the Azure Kubernetes Service cluster you are creating. In this task, you will create an Azure Container Registry (ACR) for this purpose, where you push images for deployment.
-
-1.  In the [Azure Portal](https://portal.azure.com/), select **+ Create a resource**, **Containers**, then click **Azure Container Registry**.
-
-    ![In this screenshot of the Azure portal, + Create a resource is highlighted and labeled 1 on the left side. To the right, Containers is highlighted and labeled 2 under Azure Marketplace. To the right of that, Azure Container Registry is highlighted and labeled 3 under Featured.](media/b4-image32.png)
-
-2.  On the Create container registry blade, enter the following:
-
-    -   **Registry name:** Enter a name, such as "fabmedicalSUFFIX", as shown in the following screenshot.
-
-    -   **Subscription:** Choose the same subscription you are using for all your work.
-
-    -   **Resource group:** Choose Use existing and select the resource group you created previously.
-
-    -   **Location:** Choose the same region that you did before.
-
-    -   **Admin user:** Select Enable.
-
-    -   **SKU:** Select Standard.
-
-        ![In the Create container registry blade, the values listed above appear in the corresponding boxes.](media/b4-image33.png)
-
-3.  Select **Create**.
-
-4.  Navigate to your ACR account in the Azure Portal. As this is a new account, you will not see any repositories yet. You will create these during the hands-on lab.
-
-    ![This is a screenshot of your ACR account in the Azure portal. No repositories are visible yet.](media/b4-image34.png)
 
 ### Task 9: Create a Service Principal
 
@@ -579,43 +300,7 @@ In this task, you will create your Azure Kubernetes Service cluster. You will us
 
 > **Note: If you experience errors related to lack of available cores, you may have to delete some other compute resources or request additional cores to your subscription and then try this again.**
 
-### Task 11: Install Azure CLI
 
-In later exercises, you will need the Azure CLI 2.0 to connect to your Kubernetes cluster and run commands from your local machine. A complete list of instructions for supported platforms is available on this page:
-
-<https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest>
-
-1.  For MacOS -- use homebrew:
-
-    ``` bash
-    brew update
-
-    brew install azure-cli
-    ```
-
-2.  For Windows -- using WSL _on your local machine (not the build agent)_:
-
-    ``` bash
-    AZ_REPO=$(lsb_release -cs)
-    echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
-
-    curl -L https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-
-    sudo apt-get install apt-transport-https
-    sudo apt-get update && sudo apt-get install azure-cli
-    ```
-
-### Task 12: Install Kubernetes CLI
-
-In later exercises, you will need the Kubernetes CLI (kubectl) to deploy to your Kubernetes cluster and run commands from your local machine.
-
-1.  Install the Kubernetes client using Azure CLI:
-
-    ``` bash
-    az login
-
-    sudo az acs kubernetes install-cli --install-location /usr/local/bin/kubectl
-    ```
 
 ### Task 13: Download the FabMedical starter files
 
