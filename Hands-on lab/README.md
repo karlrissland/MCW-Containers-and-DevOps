@@ -6,7 +6,7 @@ At the end of this lab you will be better able to build and deploy containerized
 ## Containers and DevOps Development Environment
 A development environment has been created for you.  You simply need to click the deploy to Azure button to provision it.  This takes roughly 15min to stand up the VM then another 10 min to install and configure the necessary tooling once you log into the VM.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F<replacevalue>%2Fmaster%2FEnvironments%2FWorkshopEnv.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkarlrissland%2FMCW%2DContainers%2Dand%2DDevOps%2Fmaster%2FHands%2Don%20lab%2FEnvironments%2FWorkshopEnv.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
