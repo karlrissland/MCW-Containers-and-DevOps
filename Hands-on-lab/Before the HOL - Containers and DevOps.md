@@ -29,7 +29,7 @@ The names of manufacturers, products, or URLs are provided for informational pur
   - [Before the hands-on lab](#before-the-hands-on-lab)
     - [Task 1: Prepare your development environment](#task-1-prepare-your-development-environment)
     - [Task 2: Configure your dev environment](#task-2-configure-your-dev-environment)
-    - [Task 3: Validate your environment](#task-3-validate-your-environment)
+    - [Task 3: Validate your environment (Optional, everything should be good)](#task-3-validate-your-environment-optional-everything-should-be-good)
     - [Task 4: Setup your Azure DevOps Account](#task-4-setup-your-azure-devops-account)
     - [Task 5: Create Azure Resources needed for the lab](#task-5-create-azure-resources-needed-for-the-lab)
     - [Task 9: Create a Service Principal](#task-9-create-a-service-principal)
@@ -156,7 +156,7 @@ The script should take about 5 minutes to complete.
     
     ![Shows docker welcome](media/b4-t2-i9.png)
 
-### Task 3: Validate your environment
+### Task 3: Validate your environment (Optional, everything should be good)
 
 We are going to run a couple of tests to make sure your environment is setup correctly.  We are going to;
 - Open Visual Studio Code
@@ -164,12 +164,44 @@ We are going to run a couple of tests to make sure your environment is setup cor
 - Verify we can run a docker container
 - Verify we have various command line tools installed and running
 
-1. Open Visual Studio Code and verify extensions are installed
-2. Open a terminal window and configure PowerShell as your default terminal
-3. Test docker by entering 'docker run hello-world' in the terminal window
-4. Enter 'az' in the terminal window to verify the azure command line tool
-5. Enter 'kubectl' in the terminal window to verify the kubernetes command line tool
-6. Enter 'helm' in the terminal window to verify the helm command line tool
+1. Verify you have Google Chrome, Setup_tools, Visual studio Code, and Postman installed by noting the shortcuts have been placed on your desktop.
+
+    ![Shows Desktop icons](media/b4-t3-i1.png)
+
+2. Open Visual Studio Code (the blue icon) and verify extensions are installed.
+     >**Note: VSCode will open a browser window which will prompt you to choose your default browser, select Chrome and click OK.**
+
+     ![Shows Browser Default Dialog](media/b4-t3-i2.png)
+
+     Next, verify VSCode is showing the three icons highlighted below.  These represent your Azure, Kubernetes, and Docker extensions.
+
+     ![Shows VSCode Extensions](media/b4-t3-i3.png)
+
+3. Open a terminal window in VSCode and configure PowerShell as your default terminal
+   
+   ![Shows opening the VSCode terminal](media/b4-t3-i4.png)
+
+   ![Shows the VSCode terminal window with powershell selected](media/b4-t3-i5.png)
+
+4. Test docker by entering 'docker run hello-world' in the terminal window.  You should see the message "Hello from Docker!"
+   
+   ![Shows running a docker command](media/b4-t3-i6.png)
+
+   Next click on the Docker extension in visual studio code and expand the images node and the containers node to verify the extension is working.  You should see the hello-world container and a stopped container instance.
+
+   ![Shows the docker extension](media/b4-t3-i6a.png)
+
+5. Enter 'az' in the terminal window to verify the azure command line tool.  You should see help information as a response.
+   
+   ![Shows running the Azure Command](media/b4-t3-i7.png)
+
+6. Enter 'kubectl' in the terminal window to verify the kubernetes command line tool.  You should see help information as a response.
+   
+   ![Shows running the kubernetes command](media/b4-t3-i8.png)
+
+7. Enter 'helm' in the terminal window to verify the helm command line tool.  You should see help information as a response.
+   
+   ![Shows running the helm command](media/b4-t3-i9.png)
 
 ### Task 4: Setup your Azure DevOps Account
 This task will walk you through creating a new Azure DevOps tennant and creating a project for the lab.
