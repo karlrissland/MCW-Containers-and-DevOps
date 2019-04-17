@@ -28,7 +28,7 @@ The names of manufacturers, products, or URLs are provided for informational pur
   - [Requirements](#requirements)
   - [Before the hands-on lab](#before-the-hands-on-lab)
     - [Task 1: Prepare your development environment](#task-1-prepare-your-development-environment)
-    - [Task 2: Configur your dev environment](#task-2-configur-your-dev-environment)
+    - [Task 2: Configure your dev environment](#task-2-configure-your-dev-environment)
     - [Task 3: Validate your environment](#task-3-validate-your-environment)
     - [Task 4: Setup your Azure DevOps Account](#task-4-setup-your-azure-devops-account)
     - [Task 5: Create Azure Resources needed for the lab](#task-5-create-azure-resources-needed-for-the-lab)
@@ -79,23 +79,34 @@ You will deploy the development workstation to your azure subscription.  This wi
 - Installs Docker-Desktop on the VM
 
 > **Note: Setting up the development machine is optional.  You can isntall the development tools onto your local Windows, MacOSX, or Linux development workstation.**
+> 
+> **You can find instructions and scripts [here](link).  When done, skip to Task 4**
 
-1.  Click the "deploy to Azure" Button.  This will take you to the Azure Portal, log you in, and show you the custom template deployment screen prompting you for deployment parameters.
+1.  Click the "deploy to Azure" Button.  This will take you to the Azure Portal, log you in, and show you the custom template deployment screen prompting you for deployment parameters.  **NOTE:** The default user name is "sysadmin" and the default password is "Password$123".
 
 2.  For the **Resource Group**, select to Create New and enter something like "fabmedical-SUFFIX".
 
-    ![This is a screenshot of the deploy to azure screen showing how to create a new resource group.](media/na.png)
+    ![This is a screenshot of the deploy to azure screen showing how to create a new resource group.](media/b4-t1-i1.png)
 
-3.  Enter the **Admin User Name** and **Admin User Password** or accept the user "sysadmin" and the default password "Password$123".
+3.  Check the **I agree to the terms and conditions stated above** checkbox and then click the **Purchase** button.  Deploying the VM should take about 15 minutes.  This is a good time to start reviewing the Hands-on lab step by step documentation.
 
-    ![Shows where to add user name and password.](media/na.png)
+    ![Shows the ckeckbox and purchase button](media/b4-t1-i2.png)
 
-4.  Check the **I agree to the terms and conditions stated above** checkbox and then click the **Purchase** button.  Deploying the VM should take about 15 minutes.  This is a good time to start reviewing the Hands-on lab step by step documentation.
+4. Sit back and wait.  It will take about 15-20min to deploy and configure the development environment.  You can monitor the process via the notifications menu option at the top right of the azure portal.
 
-    ![Shows the ckeckbox and purchase button](media/na.png)
+     ![Shows the notification icon in the Azure portal](media/b4-t1-i3.png)
 
+    You can get more detail about the deployment by clicking the Deployment Process link.
 
-### Task 2: Configur your dev environment
+    ![Shows detailed deployment status](media/b4-t1-i4.png)
+
+    When your deployment is complete, you can click the link to the resource group to review the services that have been created and remote into your new dev workstation.
+
+    ![Shows the completed deployment](media/b4-t1-i5.png)
+    
+>**Note: If you plan on using this workstation for an extended period of time, it is recomended that you turn on [just in time access](https://docs.microsoft.com/en-us/azure/security-center/security-center-just-in-time) to your VM and setup an [auto shutdown policy](https://azure.microsoft.com/en-us/blog/announcing-auto-shutdown-for-vms-using-azure-resource-manager/)**
+
+### Task 2: Configure your dev environment
 
 Your development VM is almost ready.  Once you login for the first time, a script will run that will complete the process.  The script will configure the following;
 - Install Goggle Chrome
@@ -106,37 +117,44 @@ Your development VM is almost ready.  Once you login for the first time, a scrip
 - Install Visual Studio Code and add several extensions
 - Kick off Docker-Desktop
 The script should take about 5 minutes to complete.
-> **Note: If you are using your local maching as your development workstation, you can find instructions and scripts here<document link>**
+> 
 
 
-1.  From the Azure Portal, select the resource group you created when you deployed the template in Task 1.
+1.  From the Azure Portal, select the resource group you created when you deployed the template in Task 1 and click on vmdev01.
 
-    ![image](media/ns.png)
+    ![Shows provisioned resource group with dev vm highlighted](media/b4-t2-i1.png)
 
-2.  Select the VM.
-   
-    ![image](media/ns.png)
-
-3.  Click connect, download the RDP file, and open the RDP file.
+2.  Click connect, download the RDP file, and open the RDP file.
     
-    ![image](media/ns.png)
+    ![Shows dev vm overview with connect button highlighted](media/b4-t2-i2.png)
 
-4.  Enter the user name and password you used when you deployed the template.
+    ![Shows connect to virtual machine dialog](media/b4-t2-i3.png)
 
-    ![image](media/ns.png)
+3.  Enter the user name and password you used when you deployed the template.  **Note: choose 'Use a different account' and enter '.\sysadmin' as the user and 'Password$123' as the password if you kept the defaults**
 
-5.  Once you login, a script will kick off which will install additional tools.
+    ![Shows Login Screen](media/b4-t2-i4.png)
 
-    ![image](media/ns.png)
+    Select 'Yes' on the Remote Desktop Connection Dialog.
+
+    ![Shows RDP connection Dialog](media/b4-t2-i5.png)
+
+4.  Once you login, a script will kick off which will install additional tools.
+
+    ![Shows configuration script kicking off](media/b4-t2-i6.png)
 
 
-6.  When the script is finished, it will launch Docker-Desktop and copy a script to your desktop.  The script on your desktop can be used if you need to reinstall some of the tools.
+5.  When the script is finished, after about 5min, it will launch Docker-Desktop and copy a script to your desktop.  
+    >**Note: The script on your desktop can be used if you need to reinstall some of the tools.**  
 
-    ![image](media/ns.png)
+    Click "OK" in the Docker Desktop dialog that stats support is depricated.  This will start docker on the development machine.
 
-7.  Click OK for Docker-Desktop.  This will start docker on the development machine.  This will take about 5 minutes.
+    ![Shows Docker Desktop Deprication Dialog](media/b4-t2-i7.png)
 
-    ![The Deploying Windows 10 Pro N, Version 1709 icon indicates that deployment has begun to your Azure subscription.](media/b4-image13.png)
+    ![Shows Docker Starting](media/b4-t2-i8.png)
+
+6. After about 5min You will be prompted to login to Docker.  If you don't have a docker account and don't want to create one, you can simply close the dialog.  Docker is now up and running.
+    
+    ![Shows docker welcome](media/b4-t2-i9.png)
 
 ### Task 3: Validate your environment
 
