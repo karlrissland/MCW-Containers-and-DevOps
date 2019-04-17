@@ -206,7 +206,7 @@ Azure Kubernetes Service requires an Azure Active Directory service principal to
 
 2.  The cloud shell will open in the browser window. Choose "Bash (Linux)" if prompted or use the left-hand dropdown on the shell menu bar to choose "Bash" (as shown).
 
-    ![This is a screenshot of the cloud shell opened in a browser window. Bash was selected.](media/b4-image36.png)
+    ![This is a screenshot of the cloud shell opened in a browser window. Bash was selected.](./media/b4-image36.png)
 
 3.  Before completing the steps to create the service principal, you should make sure to set your default subscription correctly. To view your current subscription type:
 
@@ -214,7 +214,7 @@ Azure Kubernetes Service requires an Azure Active Directory service principal to
     az account show
     ```
 
-    ![In this screenshot of a Bash window, az account show has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image37.png)
+    ![In this screenshot of a Bash window, az account show has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](./media/b4-image37.png)
 
 4.  To list all of your subscriptions, type:
 
