@@ -32,9 +32,6 @@ The names of manufacturers, products, or URLs are provided for informational pur
     - [Task 3: Validate your environment (Optional, everything should be good)](#task-3-validate-your-environment-optional-everything-should-be-good)
     - [Task 4: Setup your Azure DevOps Project](#task-4-setup-your-azure-devops-project)
     - [Task 5: Create Azure Resources needed for the lab](#task-5-create-azure-resources-needed-for-the-lab)
-    - [Task 9: Create a Service Principal](#task-9-create-a-service-principal)
-    - [Task 10: Create an Azure Kubernetes Service cluster](#task-10-create-an-azure-kubernetes-service-cluster)
-    - [Task 13: Download the FabMedical starter files](#task-13-download-the-fabmedical-starter-files)
 
 <!-- /TOC -->
 
@@ -308,308 +305,54 @@ The lab uses several Azure services.  In this task we will use the Azure CLI to 
 - Azure Kubernetes Cluster
 - Azure CosmosDB
 
-1. Open Visual Studio Code and Open a PowerShell terminal window
-2. Create an Azure Service Principle
-   1.  show account
-   2.  list account
-   3.  get subscription
-   4.  create service principal
-3. Create an Azure Container Registry by executing the following command in the terminal window
-   '''az acr create --resource-group <resourceGroupName> --name <containerRegistryName> --sku basic
+>**Note: All of these resources could have been provisioned with the development workstation.  It was a choice to have you manually provision the resources to gain exposure to the Azure CLI.**
 
-4. Create an Azure Kubernetes Cluster by executing the following command in the terminal window
-    '''az aks create --name <clusterName> --resource-group <resourceGroupName> --service-pricncipal <servicePrincipalName>
+1. Open Visual Studio Code and Open a PowerShell terminal window.
+   
+    ![Shows opening the terminal window](media\b4-t5-i1.png)
 
-5. Create an Azure CosmosDB instance by executing the following command in the terminal window
+    ![Shows the terminal window configured as powershell](media\b4-t5-i2.png)
 
+2. Login to your azure subscription with the Azure CLI.
 
+    ![](media\b4-t5-i3.png)
+    ![](media\b4-t5-i4.png)
+    ![](media\b4-t5-i5.png)
 
+3. (Optional) If you are using your local development workstation, you will need to create a resourcegroup 
+   `az group create --name <myresourcegroupname>`
+   ![Shows the creation of the resource group](media\b4-t5-i6.png)
 
+4. Create an Azure Container Registry by executing the following command in the terminal window
+   `az acr create --resource-group <resourceGroupName> --name <containerRegistryName> --sku basic`
+   ![Shows the creation of the container registry](media\b4-t5-i7.png)
 
-
-
-
-
-### Task 9: Create a Service Principal
-
-Azure Kubernetes Service requires an Azure Active Directory service principal to interact with Azure APIs. The service principal is needed to dynamically manage resources such as user-defined routes and the Layer 4 Azure Load Balancer. The easiest way to set up the service principal is using the Azure cloud shell.
-
-> **Note: By default, creating a service principal in Azure AD requires account owner permission. You may have trouble creating a service principal if you are not the account owner.**
-
-1.  Open cloud shell by selecting the cloud shell icon in the menu bar.
-
-    ![The cloud shell icon is highlighted on the menu bar.](media/b4-image35.png)
-
-2.  The cloud shell will open in the browser window. Choose "Bash (Linux)" if prompted or use the left-hand dropdown on the shell menu bar to choose "Bash" (as shown).
-
-    ![This is a screenshot of the cloud shell opened in a browser window. Bash was selected.](./media/b4-image36.png)
-
-3.  Before completing the steps to create the service principal, you should make sure to set your default subscription correctly. To view your current subscription type:
-
-    ``` bash
-    az account show
-    ```
-
-    ![In this screenshot of a Bash window, az account show has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](./media/b4-image37.png)
-
-4.  To list all of your subscriptions, type:
-
-    ``` bash
-    az account list
-    ```
-
-    ![In this screenshot of a Bash window, az account list has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image38.png)
-
-5.  To set your default subscription to something other than the current selection, type the following, replacing {id} with the desired subscription id value:
-
-    ``` bash
-    az account set --subscription {id}
-    ```
-
-6.  To create a service principal, type the following command, replacing {id} with your subscription identifier, and replacing suffix with your chosen suffix to make the name unique:
-
-    ``` bash
-    az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/{id}" --name="Fabmedical-sp-{SUFFIX}"
-    ```
-
-7.  The service principal command will produce output like this. Copy this information; you will need it later.
-
-    ![In this screenshot of a Bash window, az ad sp create-for-rbac \--role=\"Contributor\" \--scopes=\"/subscriptions/{id}\" \--name=\"Fabmedical-sp\" has been typed and run at the command prompt. Service principal information is visible in the window, but at this time, we are unable to capture all of the information in the window. Future versions of this course should address this.](media/b4-image39.png)
-
-### Task 10: Create an Azure Kubernetes Service cluster
-
-In this task, you will create your Azure Kubernetes Service cluster. You will use the same SSH key you created previously to connect to this cluster in the next task.
-
-1.  From the Azure Portal, select **+ Create a resource**, **Containers** and select **Kubernetes Service**.
-
-    ![In this screenshot of the Azure portal, + Create a resource is highlighted and labeled 1 on the left side. To the right, Containers is highlighted and labeled 2 under Azure Marketplace. To the right of that, Kubernetes Service is highlighted and labeled 3 under Featured.](media/b4-image40.png)
-
-2.  In the Basics blade provide the information shown in the screenshot that follows:
-
-    > NOTE: You may need to scroll to see all values.
-
-    * **Subscription**: Choose your subscription which you have been using throughout the lab.
-    * **Resource group**: Select the resource group you have been using through the lab.
-    * **Name**: Enter fabmedical-SUFFIX.
-    * **Region**: Choose the same region as the resource group.
-    * **Kubernetes version**: 1.9.10.
-    * **DNS Prefix**: Enter fabmedical-SUFFIX.
-
-        ![Basics is selected in the Create Azure Kubernetes Service blade, and the values listed above appear in the corresponding boxes in the Basics blade on the right.](media/b4-image41.png)
-
-    * Configure your VM size.
-
-        * Click "Change Size".
-        * Search for "D2_v2".
-        * Select "D2_v2".
-
-            ![Microsoft Azure](media/b4-image41b.png)
-
-    * Set the Node Count to 2.
-
-        ![Microsoft Azure](media/b4-image41c.png)
+5. Create an Azure Kubernetes Cluster by executing the following command in the terminal window
 
 
-3. Select "Next : Authentication"
+    `az aks create --resource-group <yours> --name fabmedAKSCluster --node-count 2 --enable-addons monitoring --generate-ssh-keys`
 
-    * Configure your service principal.
     
-        * **Service principal client ID**: Use the service principal “appId” from the previous step.
-        * **Service principal client secret**: Use the service principal “password” from the previous step.
+    ![Shows the creation of the kubernetes cluster](media\b4-t5-i8.png)
 
-            ![Microsoft Azure](media/b4-image41a.png)
+    >**Note: this takes a little while**
 
+    ![Shows AKS deployment complete](media\b4-t5-i9.png)
 
-4. Select "Next: Networking".
-5. Keep the defaults and select "Next: Monitoring".
-6. Keep the defaults and select "Next: Tags".
-7. Keep the defaults and select "Review + create".
-8. You should see that validation passed; select "Create".
+6. Create an Azure CosmosDB instance by executing the following command in the terminal window
+   
+    `az cosmosdb create --resource-group <yours> --name FabMedCosmos --kind MongoDB --locations "East US" --default-consistency-level "ConsistentPrefix"`
+    ![Shows the creation of CosmosDB](media\b4-t5-i10.png)
 
-9.  On the Summary blade, you should see that validation passed; select **OK**.
+    >**Note: this takes a few moments**
 
-    ![Summary is selected in the Create Azure Kubernetes Service blade, and a Validation passed message appears in the Summary blade on the right.](media/b4-image43.png)
+    ![Shows cosmos db complete provision](media\b4-t5-i11.png)
 
-10. The Azure Kubernetes Service cluster will begin deployment to your Azure subscription. You should see a successful deployment notification when the cluster is ready. It can take up to 10 minutes before your Azure Kubernetes Service cluster is listed in the Azure Portal. You can proceed to the next step while waiting for this to complete, then return to view the success of the deployment.
+7. Go to the Azure Portal and take a look at your resource group to verify the services have been created.
 
-    ![This is a screenshot of a deployment notification indicating that the deployments succeeded.](media/b4-image45.png)
+    ![Shows the resource group with all the provisioned services](media\b4-t5-i12.png)
+
 
 > **Note: If you experience errors related to lack of available cores, you may have to delete some other compute resources or request additional cores to your subscription and then try this again.**
-
-
-
-### Task 13: Download the FabMedical starter files
-
-FabMedical has provided starter files for you. They have taken a copy of one of their websites, for their customer Contoso Neuro, and refactored it from a single node.js site into a website with a content API that serves up the speakers and sessions. This is a starting point to validate the containerization of their websites. They have asked you to use this to help them complete a POC that validates the development workflow for running the website and API as Docker containers and managing them within the Azure Kubernetes Service environment.
-
-1.  From WSL, download the starter files by typing the following curl instruction (case sensitive):
-
-    ```bash
-    curl -L -o FabMedical.tgz http://bit.ly/2uhZseT
-    ```
-
-2.  Create a new directory named FabMedical by typing in the following command:
-
-    ```bash
-    mkdir FabMedical
-    ```
-
-3.  Unpack the archive with the following command. This command will extract the files from the archive to the FabMedical directory you created. The directory is case sensitive when you navigate to it.
-
-    ```bash
-    tar -C FabMedical -xzf FabMedical.tgz --strip-components=1
-    ```
-
-4.  Navigate to FabMedical folder and list the contents.
-
-    ```bash
-    cd FabMedical
-
-    ll
-    ```
-
-5.  You'll see the listing includes three folders, one for the web site, another for the content API and one to initialize API data:
-
-    ```bash
-    content-api/
-    content-init/
-    content-web/
-    ```
-
-6.  Next log into your VisualStudio.com account.
-
-    If this is your first time logging into this account you will be taken through a first-run experience:
-
-    * Confirm your contact information and select next.
-    * Select "Create new account".
-    * Enter a fabmedical-SUFFIX for your account name and select Continue.
-
-7.  Create repositories to host the code.
-
-    * Select the icon in the top left corner to return to the account home page.
-
-        ![Home page icon](media/b4-image47.png)
-        
-    * Select "New Project".
-        * Enter fabmedical as the project name.
-        * Ensure the Version control is set to Git.
-        * Select "Create".
-        
-    * Once the project creation has completed, select "Code".
-    
-    * Use the repository dropdown to create a new repository by selecting "+ New repository".
-    
-        ![Repository dropdown](media/b4-image48.png)
-           
-    * Enter "content-web" as the repository name.
-    
-    * Once the project is created click "Generate Git credentials".
-    
-        ![Generate Git Credentials](media/b4-image50.png)
-          
-        * Enter a password.
-        * Confirm the password.
-        * Select "Save Git Credentials".
-        
-    * Using your WSL window, set your username and email which are used in Azure DevOps for Git Commits.
-
-        ```bash
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
-        ```
-        For example:
-
-        ```bash
-            git config --global user.email "you@example.onmicrosoft.com"
-            git config --global user.name "you@example.onmicrosoft.com"
-        ```
-    
-    * Using your WSL window, initialize a new git repository.
-
-        ```bash
-        cd content-web
-        git init
-        git add .
-        git commit -m "Initial Commit"
-        ```
-        
-    * Setup your VisualStudio.com repository as a new remote for push. You can copy the commands for "**HTTPS**" to do this from your browser.  Edit the HTTPS URL as given below:
-
-       Remove characters between "https://" and "dev.azure.com from" HTTPS URL of the copied commands.
-       For example:
-       
-       ```bash
-       From this https URL 
-       "git remote add origin https://fabmedical-sol@dev.azure.com/fabmedical-sol/fabmedical/_git/content-web
-        git push -u origin --all"
-
-       Remove "fabmedical-sol@" from the above url to make it like below:
-       "git remote add origin https://dev.azure.com/fabmedical-sol/fabmedical/_git/content-web
-        git push -u origin --all"
-       ```
-        
-         Paste these commands into your WSL window.
-        
-       * When prompted, enter your VisualStudio.com username and the git credentials password you created earlier in this task.
-        
-    * Use the repository dropdown to create a second repository called "content-api".
-    
-        * Using your WSL window, initialize a new git repository in the content-api directory.
-        
-            ```bash
-            cd ../content-api
-            git init
-            git add .
-            git commit -m "Initial Commit"
-            ```
-            
-        * Setup your VisualStudio.com repository as a new remote the push. Use the repository dropdown to switch to the "content-api" repository. You can then copy the commands for the setting up the content-api repository from your browser, then update the HTTPS URL as you did earlier for content-web repository HTTPS url. Paste these commands into your WSL window.
-        
-        * When prompted, enter your VisualStudio.com username and the git credentials password you created earlier in this task.
-        
-    * Use the repository drop down to create a third repository called "content-init".
-    
-        * Using your WSL window, initialize a new git repository in the content-init directory.
-        
-            ```bash
-            cd ../content-init
-            git init
-            git add .
-            git commit -m "Initial Commit"
-            ```
-        * Setup your VisualStudio.com repository as a new remote the push.  Use the repository drop down to switch to the "content-init" repository. You can then copy the commands for the setting up the content-init repository from your browser, then update the HTTPS URL as you did earlier for other repo's HTTPS url's. Paste these commands into your WSL window.
-        
-        * When prompted, enter your VisualStudio.com username and the git credentials password you created earlier in this task.
-
-8.  Clone your repositories to the build agent.
-
-    * From WSL, connect to the build agent VM as you did previously in Before the hands-on lab - Task 6: Connect securely to the build agent using the SSH command.
-
-    * In your browser, switch to the "content-web" repository and click "Clone" in the right corner.
-
-        ![This is a screenshot of the content-web repository page with the Clone button indicated.](media/b4-image51.png)
-
-    * Copy the repository url.
-        
-    * Update the repository url by removing the characters between "https://" and "dev.azure.com".
-       
-      For example: modify the repository url "https://fabmedical-sol@dev.azure.com/fabmedical-sol/fabmedical/_git/content-web"
-      as "https://dev.azure.com/fabmedical-sol/fabmedical/_git/content-web"
-
-    * Use the repository url to clone the content-web code to your build agent machine.
-
-        ```bash
-        git clone <REPOSITORY_URL>
-        ```
-
-    * In your browser, switch to the "content-api" repository and select "Clone" to see and copy the repository url and update the URL by removing some characters as you did earlier for content-web repository.
-
-    * Use the repository url and `git clone` to copy the content-api code to your build agent.
-
-    * In your browser, switch to the "content-init" repository and select "Clone" to see and copy the repository url and then update the url by removing some characters as you did earlier for other repositories.
-
-    * Use the repository url and `git clone` to copy the content-init code to your build agent.
-
->**Note: Keep this WSL window open as your build agent SSH connection. You will later open new WSL sessions to other machines.**
 
 You should follow all steps provided *before* performing the Hands-on lab.
