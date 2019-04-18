@@ -30,7 +30,7 @@ The names of manufacturers, products, or URLs are provided for informational pur
     - [Task 1: Prepare your development environment](#task-1-prepare-your-development-environment)
     - [Task 2: Configure your dev environment](#task-2-configure-your-dev-environment)
     - [Task 3: Validate your environment (Optional, everything should be good)](#task-3-validate-your-environment-optional-everything-should-be-good)
-    - [Task 4: Setup your Azure DevOps Account](#task-4-setup-your-azure-devops-account)
+    - [Task 4: Setup your Azure DevOps Project](#task-4-setup-your-azure-devops-project)
     - [Task 5: Create Azure Resources needed for the lab](#task-5-create-azure-resources-needed-for-the-lab)
     - [Task 9: Create a Service Principal](#task-9-create-a-service-principal)
     - [Task 10: Create an Azure Kubernetes Service cluster](#task-10-create-an-azure-kubernetes-service-cluster)
@@ -80,7 +80,7 @@ You will deploy the development workstation to your azure subscription.  This wi
 
 > **Note: Setting up the development machine is optional.  You can isntall the development tools onto your local Windows, MacOSX, or Linux development workstation.**
 > 
-> **You can find instructions and scripts [here](link).  When done, skip to Task 4**
+> **You can find instructions and scripts [here](/Local Machine Setup.md).  When done, skip to Task 4**
 
 1.  Click the "deploy to Azure" Button.  This will take you to the Azure Portal, log you in, and show you the custom template deployment screen prompting you for deployment parameters.  **NOTE:** The default user name is "sysadmin" and the default password is "Password$123".
 
@@ -203,16 +203,102 @@ We are going to run a couple of tests to make sure your environment is setup cor
    
    ![Shows running the helm command](media/b4-t3-i9.png)
 
-### Task 4: Setup your Azure DevOps Account
-This task will walk you through creating a new Azure DevOps tennant and creating a project for the lab.
+### Task 4: Setup your Azure DevOps Project
+This task will walk you through creating a new Azure DevOps project and uploading the FabMedical starter files.
+
+>**Note: If you do not yet have an Azure DevOps project, it is easy and free to sign up.  Azure DevOps is free to use for teams of up to 5 users and for open source projects, free for an unlimited number of users.  To Create a new tenant, go to visualstudio.com, login, and create your new organization.**
 
 **NOTE: if you already have and use an Azure DevOps tennant, you can skip to step 4d and use it as long as you have the ability to create new projects and build/release pipelines.**
 
-1. go to visualstudio.com
-2. login 
-3. create new organization
-4. create new project
-5. upload project files into your repo
+1. go to visualstudio.com and login.
+   
+    ![Shows visual studio login page](media/b4-t4-i1.png)
+
+2. create new project.
+    
+    ![Shows create project button](media/b4-t4-i2.png)
+
+    Enter FabMedicalWorkshop for your project name and then click 'Create'.
+
+    ![Shows Create project dialog](media/b4-t4-i3.png)
+
+    ![Shows the project landing page](media/b4-t4-i4.png)
+
+3. To upload the FabMedical starter files to the repo, we need to initialize the local repo, add the changes, connect to the remote repository, and then push our code.
+
+    Open file explorer and navigate to C:\Source.  Right click the FabMedical directory and select to 'Open with Code'.
+
+    ![Shows the file explorer](media/b4-t4-i5.png)
+
+    In visual studio code, open a new terminal window.
+
+    ![Shows opening the terminal window](media/b4-t4-i6.png)
+
+    In the terminal window, you will enter the following commands
+
+    `git init`
+
+    ![Shows executing git init](media/b4-t4-i7.png)
+
+    `git config --global user.email "youremail@yourcompany.com"`
+
+    `git config --global user.name "yourname"`
+
+    ![shows adding global config](media/b4-t4-i8.png)
+
+    `git add --all`
+
+    ![shows adding all the files](media/b4-t4-i9.png)
+
+    `git commit -m "initial commit" --all`
+
+    ![shows commiting all the files](media/b4-t4-i10.png)
+
+    Go back to Azure DevOps and click on the repo icon in the left menu to retrieve the commands necessary to connect your local repo to your azure DevOps repo and push your files to Azure DevOps.  The commands you need to copy are highlighted.
+
+    ![shows the repo icon in azure devops](media/b4-t4-i11.png)
+
+    ![shows clone information for the azure devops repo](media/b4-t4-i12.png)
+
+    Go back to visual studio code and past the commands into the terminal window and hit enter.  This will connect your local repo to azure devOps and start to push your files..
+
+    ![shows connecting and pushing the code](media/b4-t4-i13.png)
+
+    You will be asked to login before you can push files to the remote server.
+
+    ![shows authenticating against azure devops](media/b4-t4-i14.png)
+
+    After logging in, the files should start uploading.
+
+    ![shows files uploading to azure devops](media/b4-t4-i15.png)
+
+    Going back to Azure DevOps and refreshing the page will show the files you just uploaded.
+
+    ![shows files in azure devops](media/b4-t4-i16.png)
+
+4. Connect Visual Studio Code to Azure DevOps (Optional).  This will provide more information about bugs, work items, and builds withing your Visual Studio Code environment.
+
+    Click the 'Team' Icon in the lower left.
+
+    ![Shows the team icon](media/b4-t4-i17.png)
+
+    Select to 'Authenticate and get and access token automatically'.
+
+    ![Shows the command menu](media/b4-t4-i18.png)
+
+    Copy the token and then hit enter.
+
+    ![Shows the access code](media/b4-t4-i19.png)
+
+    Paste your token into the Device Login Page and click continue to authenticate.
+
+    ![Shows the device auth screen](media/b4-t4-i20.png)
+
+    When done, you will see additional information in the lower left of Visual Studio Code relating to Azure DevOps.
+
+    ![Shows the connected experience](media/b4-t4-i21.png)
+
+
 
 ### Task 5: Create Azure Resources needed for the lab
 
