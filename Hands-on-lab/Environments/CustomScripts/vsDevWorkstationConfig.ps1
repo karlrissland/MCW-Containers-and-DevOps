@@ -11,6 +11,9 @@ mkdir 'c:\Source'
 Set-Location 'c:\Source'
 git clone $repoUri
 
+##TODO Download zip file of fabmedical source into temp dir
+##TODO Unzip fabmedical.zip file into c:\source
+
 ## Build and Package App
 $vs_path = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise"
 if (!(Test-Path $vs_path)) {
@@ -74,6 +77,7 @@ if (!(Test-Path $install_packages_bat)) {
 	Add-Content -Path $install_packages_bat -Value "powershell.exe -Command code --install-extension PeterJausovec.vscode-docker --force"
 	Add-Content -Path $install_packages_bat -Value "powershell.exe -Command code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools --force"
 	Add-Content -Path $install_packages_bat -Value "powershell.exe -Command code --install-extension ms-vscode.vscode-node-azure-pack --force"
+	Add-Content -Path $install_packages_bat -Value "powershell.exe -Command code --install-extension ms-vsts.team --force"
 
 	Add-Content -Path $install_packages_bat -Value "powershell.exe start-process 'C:\Program Files\Docker\Docker\Docker for Windows.exe'"
 
