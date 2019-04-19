@@ -309,23 +309,23 @@ The lab uses several Azure services.  In this task we will use the Azure CLI to 
 
 1. Open Visual Studio Code and Open a PowerShell terminal window.
    
-    ![Shows opening the terminal window](media\b4-t5-i1.png)
+    ![Shows opening the terminal window](media/b4-t5-i1.png)
 
-    ![Shows the terminal window configured as powershell](media\b4-t5-i2.png)
+    ![Shows the terminal window configured as powershell](media/b4-t5-i2.png)
 
 2. Login to your azure subscription with the Azure CLI.
 
-    ![](media\b4-t5-i3.png)
-    ![](media\b4-t5-i4.png)
-    ![](media\b4-t5-i5.png)
+    ![](media/b4-t5-i3.png)
+    ![](media/b4-t5-i4.png)
+    ![](media/b4-t5-i5.png)
 
 3. (Optional) If you are using your local development workstation, you will need to create a resourcegroup 
    `az group create --name <myresourcegroupname>`
-   ![Shows the creation of the resource group](media\b4-t5-i6.png)
+   ![Shows the creation of the resource group](media/b4-t5-i6.png)
 
 4. Create an Azure Container Registry by executing the following command in the terminal window
    `az acr create --resource-group <resourceGroupName> --name <containerRegistryName> --sku basic`
-   ![Shows the creation of the container registry](media\b4-t5-i7.png)
+   ![Shows the creation of the container registry](media/b4-t5-i7.png)
 
 5. Create an Azure Kubernetes Cluster by executing the following command in the terminal window
 
@@ -333,24 +333,24 @@ The lab uses several Azure services.  In this task we will use the Azure CLI to 
     `az aks create --resource-group <yours> --name fabmedAKSCluster --node-count 2 --enable-addons monitoring --generate-ssh-keys`
 
     
-    ![Shows the creation of the kubernetes cluster](media\b4-t5-i8.png)
+    ![Shows the creation of the kubernetes cluster](media/b4-t5-i8.png)
 
     >**Note: this takes a little while**
 
-    ![Shows AKS deployment complete](media\b4-t5-i9.png)
+    ![Shows AKS deployment complete](media/b4-t5-i9.png)
 
 6. Create an Azure CosmosDB instance by executing the following command in the terminal window
    
     `az cosmosdb create --resource-group <yours> --name FabMedCosmos --kind MongoDB --locations "East US" --default-consistency-level "ConsistentPrefix"`
-    ![Shows the creation of CosmosDB](media\b4-t5-i10.png)
+    ![Shows the creation of CosmosDB](media/b4-t5-i10.png)
 
     >**Note: this takes a few moments**
 
-    ![Shows cosmos db complete provision](media\b4-t5-i11.png)
+    ![Shows cosmos db complete provision](media/b4-t5-i11.png)
 
 7. Go to the Azure Portal and take a look at your resource group to verify the services have been created.
 
-    ![Shows the resource group with all the provisioned services](media\b4-t5-i12.png)
+    ![Shows the resource group with all the provisioned services](media/b4-t5-i12.png)
 
 
 > **Note: If you experience errors related to lack of available cores, you may have to delete some other compute resources or request additional cores to your subscription and then try this again.**
