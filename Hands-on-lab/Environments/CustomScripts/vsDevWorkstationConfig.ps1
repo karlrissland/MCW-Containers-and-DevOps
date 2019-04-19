@@ -13,6 +13,13 @@ git clone $repoUri
 
 ##TODO Download zip file of fabmedical source into temp dir
 ##TODO Unzip fabmedical.zip file into c:\source
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$WebClient = New-Object System.Net.WebClient
+$url="https://github.com/karlrissland/MCW-Containers-and-DevOps/raw/master/Hands-on-lab/FabMedical.zip"
+$path="c:\source\FabMedical.zip"
+$WebClient.DownloadFile( $url, $path ) 
+
+expand-archive c:\source\fabmedical.zip -DestinationPath c:\source
 
 ## Build and Package App
 $vs_path = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise"
