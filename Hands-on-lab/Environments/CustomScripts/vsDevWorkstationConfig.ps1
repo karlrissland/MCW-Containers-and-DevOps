@@ -77,6 +77,7 @@ if (!(Test-Path $install_packages_bat)) {
 	Add-Content -Path $install_packages_bat -Value "$choco_exe install googlechrome -y"
 	Add-Content -Path $install_packages_bat -Value "$choco_exe install nodejs -y"
 	Add-Content -Path $install_packages_bat -Value "$choco_exe install curl -y"
+	Add-Content -Path $install_packages_bat -Value "$choco_exe install bower -y"
 	# Add-Content -Path $install_packages_bat -Value "$choco_exe install docker-desktop -y"
 	Add-Content -path $install_packages_bat -Value "$choco_exe install azure-cli -y"
 	Add-Content -path $install_packages_bat -Value "$choco_exe install kubernetes-cli -y"
