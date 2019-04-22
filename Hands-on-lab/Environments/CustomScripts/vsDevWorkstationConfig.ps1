@@ -7,12 +7,11 @@ Param (
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
 ## Clone Repo
-mkdir 'c:\Source'
-Set-Location 'c:\Source'
-git clone $repoUri
+##mkdir 'c:\Source'
+##Set-Location 'c:\Source'
+##git clone $repoUri
 
-##TODO Download zip file of fabmedical source into temp dir
-##TODO Unzip fabmedical.zip file into c:\source
+mkdir 'c:\Source'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $WebClient = New-Object System.Net.WebClient
 $url="https://github.com/karlrissland/MCW-Containers-and-DevOps/raw/master/Hands-on-lab/FabMedical.zip"
@@ -76,6 +75,7 @@ $Move_bat_to = "C:\Users\Public\Desktop\Setup_Tools.bat"
 if (!(Test-Path $install_packages_bat)) {
 	Set-Content -Path $install_packages_bat -Value "$choco_exe install postman -y"
 	Add-Content -Path $install_packages_bat -Value "$choco_exe install googlechrome -y"
+	Add-Content -Path $install_packages_bat -Value "$choco_exe install nodejs -y"
 	# Add-Content -Path $install_packages_bat -Value "$choco_exe install docker-desktop -y"
 	Add-Content -path $install_packages_bat -Value "$choco_exe install azure-cli -y"
 	Add-Content -path $install_packages_bat -Value "$choco_exe install kubernetes-cli -y"
