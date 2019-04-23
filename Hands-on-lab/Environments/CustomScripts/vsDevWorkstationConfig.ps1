@@ -22,7 +22,7 @@ expand-archive c:\source\fabmedical.zip -DestinationPath c:\source
 
 set-location 'c:\source\FabMedical'
 git init 
-git config --global user.email "rictor@theland.com"
+git config --global user.email "richter@theland.com"
 git config --global user.name "lord of the mist village"
 git add --all 
 git commit -m "initial commit" --all 
