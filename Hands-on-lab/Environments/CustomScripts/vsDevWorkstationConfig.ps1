@@ -20,6 +20,13 @@ $WebClient.DownloadFile( $url, $path )
 
 expand-archive c:\source\fabmedical.zip -DestinationPath c:\source
 
+set-location 'c:\source\FabMedical'
+git init 
+git config --global user.email "rictor@theland.com"
+git config --global user.name "lord of the mist village"
+git add --all 
+git commit -m "initial commit" --all 
+
 ## Build and Package App
 $vs_path = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise"
 if (!(Test-Path $vs_path)) {
