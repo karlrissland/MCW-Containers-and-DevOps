@@ -20,10 +20,26 @@ $WebClient.DownloadFile( $url, $path )
 
 expand-archive c:\source\fabmedical.zip -DestinationPath c:\source
 
-set-location 'c:\source\FabMedical'
-git init 
 git config --global user.email "richter@theland.com"
 git config --global user.name "lord of the mist village"
+
+set-location 'c:\source\FabMedical\content-api'
+git init 
+git add --all 
+git commit -m "initial commit" --all 
+
+set-location 'c:\source\FabMedical\content-deployments'
+git init 
+git add --all 
+git commit -m "initial commit" --all 
+
+set-location 'c:\source\FabMedical\content-init'
+git init 
+git add --all 
+git commit -m "initial commit" --all 
+
+set-location 'c:\source\FabMedical\content-web'
+git init 
 git add --all 
 git commit -m "initial commit" --all 
 

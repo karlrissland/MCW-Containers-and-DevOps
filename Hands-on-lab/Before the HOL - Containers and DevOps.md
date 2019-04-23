@@ -79,7 +79,9 @@ You will deploy the development workstation to your azure subscription.  This wi
 > 
 > **You can find instructions and scripts [here](/Local Machine Setup.md).  When done, skip to Task 4**
 
-1.  Click the "deploy to Azure" Button.  This will take you to the Azure Portal, log you in, and show you the custom template deployment screen prompting you for deployment parameters.  **NOTE:** The default user name is "sysadmin" and the default password is "Password$123".
+1.  Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkarlrissland%2FMCW%2DContainers%2Dand%2DDevOps%2Fmaster%2FHands%2Don%2Dlab%2FEnvironments%2FWorkshopEnv.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a> Button.  This will take you to the Azure Portal, log you in, and show you the custom template deployment screen prompting you for deployment parameters.  **NOTE:** The default user name is "sysadmin" and the default password is "Password$123".
 
 2.  For the **Resource Group**, select to Create New and enter something like "fabmedical-SUFFIX".
 
