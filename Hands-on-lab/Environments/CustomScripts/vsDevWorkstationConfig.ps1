@@ -82,6 +82,9 @@ $choco_exe = "C:\ProgramData\chocolatey\bin\choco.exe"
 # Install Hyper-V
 Install-WindowsFeature -Name Hyper-V -IncludeManagementTools -Restart
 
+#Install the container feature
+Install-WindowsFeature -Name Containers -Restart
+
 # Loading Docker Desktop prior to login so user isn't asked to logout and login to use
 C:\ProgramData\chocolatey\bin\choco.exe install docker-desktop -y
 
