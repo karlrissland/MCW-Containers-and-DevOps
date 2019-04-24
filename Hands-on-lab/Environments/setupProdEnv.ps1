@@ -1,3 +1,5 @@
+##NOTE: This will be replaced by ARM templates so everything gets setup at once
+
 $resGroup = 'FabMedicalWorkshop'
 $acrName = 'rissFabMedContainerReg'
 $aksName = 'rissFabMedAks'
