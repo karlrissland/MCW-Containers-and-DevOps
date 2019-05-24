@@ -109,15 +109,14 @@ You will deploy the development workstation to your azure subscription.  This wi
 
 ### Task 2: Configure your dev environment
 
-Your development VM is almost ready.  Once you login for the first time, a script will run that will complete the process.  The script will configure the following;
-- Install Goggle Chrome
-- Install Postman
-- Install Azure CLI
-- Install Kubernetes CLI
-- Install Helm CLI
-- Install Visual Studio Code and add several extensions
+Your development VM is almost ready.  Once you login for the first time, a script will run that will complete the process.  The script will install and configure the following;
+- Goggle Chrome
+- Azure CLI
+- Kubernetes CLI
+- Visual Studio Code and add several extensions
+- Misc tools
 - Kick off Docker-Desktop
-The script should take about 5 minutes to complete.
+The script should take less than 5 minutes to complete.
 > 
 
 
